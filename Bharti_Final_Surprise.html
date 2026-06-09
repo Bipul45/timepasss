@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Bharti ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Handlee&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{
+margin:0;overflow:hidden;font-family:'Handlee',cursive;
+background:linear-gradient(135deg,#ffd1e8,#fff5f9);
+}
+.page{
+display:none;height:100vh;align-items:center;justify-content:center;padding:20px;
+animation:fade .7s ease;
+}
+.active{display:flex}
+.card{
+width:min(90%,700px);
+background:rgba(255,255,255,.45);
+backdrop-filter:blur(10px);
+border-radius:30px;
+padding:25px;
+text-align:center;
+box-shadow:0 10px 30px rgba(0,0,0,.12);
+}
+.type{font-size:2rem;color:#ff3f83;min-height:90px}
+.bottom{font-size:1.4rem;color:#ff4f8b;min-height:70px}
+.gifbox{
+height:240px;margin:15px 0;display:flex;align-items:center;justify-content:center;
+border:3px dashed #ff6aa2;border-radius:20px;background:#fff8fb;
+}
+.gifbox img{max-width:100%;max-height:100%;border-radius:15px}
+.btn{
+background:#ff4f8b;color:white;border:none;border-radius:30px;
+padding:14px 24px;font-size:16px;cursor:pointer
+}
+#musicBtn{position:fixed;top:10px;left:10px;z-index:99}
+.progress{position:fixed;top:12px;right:15px;color:#ff3f83;font-size:20px;font-weight:bold}
+.heart{position:fixed;bottom:-20px;animation:float 6s linear infinite}
+@keyframes float{to{transform:translateY(-110vh);opacity:0}}
+@keyframes fade{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+.cursor{animation:blink 1s infinite}
+@keyframes blink{50%{opacity:0}}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress">1/9</div>
+
+<audio id="bgMusic" loop>
+<source src="music/song.mp3" type="audio/mpeg">
+</audio>
+
+<button id="musicBtn">🎵 Music</button>
+
+<div id="pages"></div>
+
+<script>
+const pagesData=[
+["Open It With A Smile 😊","",""],
+["You Are My ❤️","gifs/chocopie.gif","Sweeter Than Every Choco Pie"],
+["Happiness Comes In Little Packets","gifs/gems.gif","Just Like You ❤️"],
+["I Give You 5 Star Rating ⭐⭐⭐⭐⭐","gifs/5star.gif","For Always Being There For Me"],
+["Your Love Melts Me Like","gifs/dairymilk.gif","Dairy Milk ❤️"],
+["You Give Refreshness In My Life Like","gifs/centerfresh.gif","Center Fresh ✨"],
+["I Will Never Take A Break","gifs/kitkat.gif","From Our Relationship ❤️"],
+["But My Every Pulse Says...","gifs/pulse.gif","Something Special..."],
+["I Love You ❤️","gifs/pulse.gif","Always And Forever... Happy Birthday Bharti 🎂❤️"]
+];
+
+const holder=document.getElementById('pages');
+
+pagesData.forEach((p,i)=>{
+holder.innerHTML+=`
+<div class="page ${i===0?'active':''}">
+<div class="card">
+<div class="type" id="top${i}"></div>
+<div class="gifbox">${p[1]?`<img src="${p[1]}" alt="">`:''}</div>
+<div class="bottom" id="bottom${i}"></div>
+${i<pagesData.length-1?'<button class="btn" onclick="nextPage()">Move With Your Smile 😊</button>':''}
+</div>
+</div>`;
+});
+
+let current=0;
+const pages=document.querySelectorAll('.page');
+
+function typeText(id,text,speed=55){
+const el=document.getElementById(id);
+el.innerHTML='<span class="cursor">|</span>';
+let i=0;
+function run(){
+ if(i<text.length){
+   el.innerHTML=text.slice(0,i+1)+'<span class="cursor">|</span>';
+   i++;
+   setTimeout(run,speed);
+ }else{
+   el.innerHTML=text;
+ }
+}
+run();
+}
+
+function startTyping(index){
+typeText('top'+index,pagesData[index][0],55);
+typeText('bottom'+index,pagesData[index][2],35);
+document.getElementById('progress').innerText=(index+1)+"/"+pagesData.length;
+}
+
+startTyping(0);
+
+function nextPage(){
+pages[current].classList.remove('active');
+current++;
+if(current<pages.length){
+pages[current].classList.add('active');
+startTyping(current);
+}
+}
+
+document.body.addEventListener('click',()=>{
+document.getElementById('bgMusic').play().catch(()=>{});
+},{once:true});
+
+musicBtn.onclick=()=>{
+let m=document.getElementById('bgMusic');
+if(m.paused)m.play();else m.pause();
+};
+
+setInterval(()=>{
+let h=document.createElement('div');
+h.className='heart';
+h.innerHTML='❤️';
+h.style.left=Math.random()*100+'vw';
+h.style.fontSize=(15+Math.random()*20)+'px';
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),6000);
+},350);
+</script>
+</body>
+</html>
